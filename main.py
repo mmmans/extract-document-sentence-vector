@@ -99,8 +99,8 @@ def train(x_train,x_test,unsup_reviews,size = 400,epoch_num=10):
         model_dbow : Bag of Words version of Paragraph Vector (PV-DBOW) model
     '''
 
-    model_dm = Doc2Vec(document = x_train,min_count=1, window=10, vector_size=size, sample=1e-3, negative=5, workers=8,epochs=10)
-    model_dbow = Doc2Vec(document = x_train,min_count=1, window=10, vector_size=size, sample=1e-3, negative=5, dm=0, workers=8,epochs=10)
+    model_dm = Doc2Vec(document = x_train,min_count=1, window=10, vector_size=size, sample=1e-3, negative=5, workers=8,epochs=1)
+    model_dbow = Doc2Vec(document = x_train,min_count=1, window=10, vector_size=size, sample=1e-3, negative=5, dm=0, workers=8,epochs=1)
     # build vocabulary
     vocab = list(x_train)
     vocab += x_test
@@ -173,7 +173,16 @@ def ROC_curve(lr,x_test,y_test):
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.show()
-
+def show_most_sim(model_dm,x_train):
+    '''this is just for test'''
+    x = random.randint(0,len(x_train))
+    print("origin sentences : {0}".format(" ".join(x_train[x].words)))
+    vecs = model_dm.docvecs[x_train[x].tags[0]]
+    sim = model_dm.docvecs.most_similar([vecs],topn=2)
+    print(sim)
+    tmp = [sim[0][0],sim[1][0]]
+    fil = [z.words for z in x_train if z.tags[0] in tmp]
+    print( "most similar sentence : {0}".format(" ".join(fil[-1])))
 if __name__ == "__main__":
     
     root_path = "./data"
@@ -184,5 +193,6 @@ if __name__ == "__main__":
     x_train,x_test,unsup_reviews,y_train, y_test = get_dataset(x,y,z)
     model_dm,model_dbow = train(x_train,x_test,unsup_reviews,vector_length,epoch_num)
     train_vecs,test_vecs = get_vectors(model_dm,model_dbow,x_train,x_test)
-    lr=Classifier(train_vecs,y_train,test_vecs, y_test)
-    ROC_curve(lr,test_vecs,y_test) 
+    #lr=Classifier(train_vecs,y_train,test_vecs, y_test)
+    #ROC_curve(lr,test_vecs,y_test) 
+    show_most_sim(model_dm,x_train)
