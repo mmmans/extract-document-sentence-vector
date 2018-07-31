@@ -3,6 +3,7 @@ This project trained a a Doc2vec model, which could extract vectors from article
 
 The project trained the Doc2vec model with [IMDB](http://ai.stanford.edu/~amaas/data/sentiment/) dataset, then used the trained model to extract the vectors of the movie reviews which is labeled either positive or negtive. Finally, we introduce the Classifier trained on the vectors and its label. Ther result shows that the classifier obtained an accuracy of 86+%. 
  ![sample](https://github.com/mans-men/extract-document-sentence-vector/blob/master/result.png)
+ ![enen](https://github.com/mans-men/extract-document-sentence-vector/blob/master/sample.png)
 
 ## Environment
 * win10
